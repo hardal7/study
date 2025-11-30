@@ -1,10 +1,10 @@
 package repository
 
 import (
-	"chat/internal/config"
-	logger "chat/internal/util"
 	"context"
 
+	"github.com/hardal7/study/internal/config"
+	logger "github.com/hardal7/study/internal/util"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

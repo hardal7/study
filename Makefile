@@ -1,4 +1,4 @@
-APP_NAME=chat
+APP_NAME=study
 BUILD_DIR=bin
 
 .PHONY: build run clean migrate

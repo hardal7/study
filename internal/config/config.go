@@ -1,9 +1,9 @@
 package config
 
 import (
-	logger "chat/internal/util"
 	"os"
 
+	logger "github.com/hardal7/study/internal/util"
 	"github.com/joho/godotenv"
 )
 

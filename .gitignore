@@ -1,4 +1,5 @@
 .env
 .crt
 .key
-bin/
+bin
+db-data

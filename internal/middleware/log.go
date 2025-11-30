@@ -1,9 +1,10 @@
 package middleware
 
 import (
-	logger "chat/internal/util"
 	"net/http"
 	"time"
+
+	logger "github.com/hardal7/study/internal/util"
 )
 
 func LogRequest(next http.HandlerFunc) http.HandlerFunc {

@@ -1,4 +1,4 @@
-module chat
+module github.com/hardal7/study
 
 go 1.25.4
 

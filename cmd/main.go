@@ -1,10 +1,10 @@
 package main
 
 import (
-	"chat/internal/api"
-	"chat/internal/config"
-	"chat/internal/repository"
-	logger "chat/internal/util"
+	"github.com/hardal7/study/internal/api"
+	"github.com/hardal7/study/internal/config"
+	"github.com/hardal7/study/internal/repository"
+	logger "github.com/hardal7/study/internal/util"
 )
 
 func init() {

@@ -1,10 +1,11 @@
 package api
 
 import (
-	"chat/internal/handler/user"
-	logger "chat/internal/util"
 	"encoding/json"
 	"net/http"
+
+	"github.com/hardal7/study/internal/handler/user"
+	logger "github.com/hardal7/study/internal/util"
 )
 
 func CreateRegisterRequest(w http.ResponseWriter, r *http.Request) {
@@ -12,6 +13,10 @@ func CreateRegisterRequest(w http.ResponseWriter, r *http.Request) {
 }
 func CreateLoginRequest(w http.ResponseWriter, r *http.Request) {
 	createRequest(w, r, user.Login, "log user in")
+}
+
+func CreateEditAccountRequest(w http.ResponseWriter, r *http.Request) {
+	createRequest(w, r, user.EditAccount, "edit user account")
 }
 
 func createRequest[v any](w http.ResponseWriter, r *http.Request,
