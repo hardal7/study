@@ -1,15 +1,15 @@
 package user
 
 import (
-	"chat/internal/config"
-	"chat/internal/model"
-	"chat/internal/repository"
-	logger "chat/internal/util"
-	"encoding/json"
 	"net/http"
 	"time"
 
+	"github.com/hardal7/study/internal/config"
+	logger "github.com/hardal7/study/internal/util"
+
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/hardal7/study/internal/model"
+	"github.com/hardal7/study/internal/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -18,10 +18,13 @@ const (
 )
 
 func Login(w http.ResponseWriter, r *http.Request, lr model.LoginRequest) {
-	user, err := repository.GetUser(r.Context(), lr)
+	logger.Info("Logging user with username: " + lr.Username)
+
+	user, err := repository.GetUserByUsername(r.Context(), lr)
 	if err != nil {
-		logger.Info("Failed to fetch user")
+		logger.Info("Failed to get user")
 		logger.Debug(err.Error())
+		http.Error(w, "User not found", http.StatusBadRequest)
 		return
 	}
 
@@ -43,22 +46,22 @@ func Login(w http.ResponseWriter, r *http.Request, lr model.LoginRequest) {
 	})
 	tokenString, err := token.SignedString([]byte(config.App.JWT_SECRET))
 	if err != nil {
-		logger.Info("Failed to generate JWT token.")
+		logger.Info("Failed to generate token")
 		logger.Debug(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	} else {
-		w.WriteHeader(http.StatusOK)
-		w.Header().Add("Content-Type", "application/json")
-		err := json.NewEncoder(w).Encode(map[string]string{
-			"token": tokenString,
-		})
-		if err != nil {
-			logger.Info("Failed to generate JSON response")
-			logger.Debug(err.Error())
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		} else {
-			logger.Info("Logged user and sent token")
+		cookie := http.Cookie{
+			Name:     "Authorization",
+			Value:    tokenString,
+			Path:     "/",
+			MaxAge:   3600 * 24 * jwtExpirationDays,
+			HttpOnly: true,
+			Secure:   true,
+			SameSite: http.SameSiteLaxMode,
 		}
+		http.SetCookie(w, &cookie)
+		w.WriteHeader(http.StatusOK)
+		logger.Info("Logged user and sent token")
 	}
 }
